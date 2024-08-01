@@ -1,0 +1,41 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends 'base.html' %}
+
+{% block title %}タスク一覧画面{% endblock %}
+
+{% block content %}
+
+<main>
+	<div>
+		<div>
+			<button>
+				<a href="/create_task" role="button">新規作成</a>
+			</button>
+		</div>
+		<div>
+			{% for task in tasks %}
+	  		<div>
+				<div>
+					<h2>{{ task.title }}</h2>
+					<!--tasksテーブルのend_timeを表示します。date()で日付のみの表示になります。-->
+					<p>期限：{{ task.end_time.date() }}</p>
+					<!--end_time（タスクの期限）がtodayよりも小さい時、つまり期限切れの場合となります。-->
+					{% if task.end_time.date() < today %}
+			                <button>
+						期限切れです！
+					</button>
+					{% endif %}
+
+				</div>
+				<div>
+					<!--/detail/～の～の部分にidをつけて表示するためのもの-->
+					<button><a href="/detail/{{ task.id }}" role="button">詳細</a></button>
+					<button><a href="/update/{{ task.id }}" role="button">編集</a></button>	
+					<button><a href="/delete/{{ task.id }}" role="button">完了</a></button>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</main>
+{% endblock content %}
